@@ -22,7 +22,6 @@ const Result = ({ data, setData }) => {
         ></img>
         <p className="title"> Weather App</p>
       </div>
-      {console.log(data)}
       <img src={icon} id="weather-img"></img>
       <span id="temperature">{Math.floor(data.main?.temp - 273.15)} °C</span>
       <span id="weather-type"> {data?.weather[0].main}</span>

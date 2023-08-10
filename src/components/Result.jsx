@@ -4,7 +4,7 @@ import backicon from "../assets/backicon.png";
 import temp from "../assets/temp.png";
 import humidity from "../assets/humidity.png";
 
-const Result = ({ data, setData }) => {
+const Result = ({ data}) => {
 
   const icon = data?.current.condition.icon;
   const refreshPage = () => {

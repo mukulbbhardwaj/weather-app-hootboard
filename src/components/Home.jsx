@@ -33,12 +33,11 @@ const Home = () => {
     console.log(err.message);
   };
   const weatherDetailsByLocation = async () => {
-    // console.log(`${location.lat},${location.long}`);
     const query = `${location.lat},${location.long}`;
     const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
     await axios.get(apiURL).then((res) => {
       console.log(res.data);
-      setData(res.data)
+      setData(res.data);
     });
   };
 

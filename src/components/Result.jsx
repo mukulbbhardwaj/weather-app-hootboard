@@ -5,8 +5,8 @@ import temp from "../assets/temp.png";
 import humidity from "../assets/humidity.png";
 
 const Result = ({ data, setData }) => {
-  const iconId = data?.weather[0].icon;
-  const icon = `http://openweathermap.org/img/wn/${iconId}@2x.png`;
+
+  const icon = data?.current.condition.icon;
   const refreshPage = () => {
     window.location.reload(false);
   };
@@ -23,21 +23,20 @@ const Result = ({ data, setData }) => {
         <p className="title"> Weather App</p>
       </div>
       <img src={icon} id="weather-img"></img>
-      <span id="temperature">{Math.floor(data.main?.temp - 273.15)} °C</span>
-      <span id="weather-type"> {data?.weather[0].main}</span>
-      <span id="location">
-        {data.name},{data.sys?.country}
-      </span>
+      <span id="temperature">{data?.current.temp_c}</span>
+      <span id="weather-type">{data?.current.condition.text}</span>
+      <span id="location">{data?.location.name }</span>
       <div className="footer-container">
         <div className="footer-item">
           <img src={temp} width={"32px"} height={"32px"} />
           <span id="feels-like-temp">
-            {Math.floor(data.main?.feels_like - 273.15)} °C
+            {console.log(data.current.humidity)}
+            {data.current.feelslike_c}
           </span>
         </div>
         <div className="footer-item">
           <img src={humidity} width={"32px"} height={"32px"} />
-          <span id="humidity">84%</span>
+          <span id="humidity">{data.current.humidity}%</span>
         </div>
       </div>
     </div>

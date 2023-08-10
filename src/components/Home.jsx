@@ -1,46 +1,71 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Result from "./Result";
 import axios from "axios";
 
 const Home = () => {
   const [cityName, setCityName] = useState("");
   const [data, setData] = useState([]);
+  const [location, setLocation] = useState({
+    lat: "",
+    long: "",
+  });
   const apiKey = import.meta.env.VITE_API_KEY;
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, showError);
+    }
+  };
+
+  const showPosition = (data) => {
+    setLocation({
+      lat: data.coords.latitude,
+      long: data.coords.longitude,
+    });
+  };
+
+  const showError = (err) => {
+    console.log("err");
+    console.log(err.message);
+  };
+  const weatherDetailsByLocation = async () => {
+    // console.log(`${location.lat},${location.long}`);
+    const query = `${location.lat},${location.long}`;
+    const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
+    await axios.get(apiURL).then((res) => {
+      console.log(res.data);
+      setData(res.data)
+    });
+  };
 
   const weatherDetails = async () => {
     if (!cityName) return;
-    const apiURL =
-      "https://api.openweathermap.org/data/2.5/weather?q=" +
-      cityName +
-      " &appid=" +
-      apiKey;
-    axios
+    const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}&aqi=no`;
+    await axios
       .get(apiURL)
       .then((res) => {
         setData(res.data);
       })
       .catch((err) => {
         console.log("err", err);
+        alert("Enter a Valid City Name");
       });
   };
   const handleKeydown = (e) => {
     if (e.key === "Enter") {
       weatherDetails();
-      console.log(data);
+      console.log("data", data);
     }
-  };
-
-  const getLocation = () => {
-    // navigator.geolocation.getCurrentPosition((position) => {
-    //   setLocation(position);
-    //   console.log(location);
-    // });
   };
 
   return (
     <>
       <div className="main-container">
-        {typeof data.main !== "undefined" ? (
+        {typeof data.current !== "undefined" ? (
           <Result data={data} setData={setData} />
         ) : (
           <div className="home-container">
@@ -55,13 +80,12 @@ const Home = () => {
               className="input-box"
             ></input>
             <p className="or-divider">------or------</p>
-            <button onClick={getLocation} className="btn">
+            <button onClick={weatherDetailsByLocation} className="btn">
               Get Device Location
             </button>
           </div>
         )}
       </div>
-   
     </>
   );
 };

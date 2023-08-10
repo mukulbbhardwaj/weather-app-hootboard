@@ -9,7 +9,7 @@ const Home = () => {
     lat: "",
     long: "",
   });
-  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiKey = '5817d0db14d04059a45175244230908';
 
   useEffect(() => {
     getLocation();

@@ -50,7 +50,7 @@ const Home = () => {
         setData(res.data);
       })
       .catch((err) => {
-        console.log("err", err);
+        console.log("err", err.message);
         alert("Enter a Valid City Name");
       });
   };

@@ -17,7 +17,7 @@ const Home = () => {
 
   const getLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, showError);
+      navigator.geolocation.getCurrentPosition(showPosition);
     }
   };
 
@@ -36,28 +36,24 @@ const Home = () => {
     const query = `${location.lat},${location.long}`;
     const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${query}&aqi=no`;
     await axios.get(apiURL).then((res) => {
-      console.log(res.data);
       setData(res.data);
     });
   };
 
   const weatherDetails = async () => {
-    if (!cityName) return;
-    const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}&aqi=no`;
-    await axios
-      .get(apiURL)
-      .then((res) => {
+    try {
+      const apiURL = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}&aqi=no`;
+      await axios.get(apiURL).then((res) => {
         setData(res.data);
       })
-      .catch((err) => {
-        console.log("err", err.message);
-        alert("Enter a Valid City Name");
-      });
-  };
+    } catch (error) {
+      console.log(error);
+      alert("Enter a Valid City Name");
+    }
+  }
   const handleKeydown = (e) => {
     if (e.key === "Enter") {
       weatherDetails();
-      console.log("data", data);
     }
   };
 

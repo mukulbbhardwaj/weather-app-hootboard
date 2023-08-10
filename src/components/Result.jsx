@@ -30,7 +30,6 @@ const Result = ({ data}) => {
         <div className="footer-item">
           <img src={temp} width={"32px"} height={"32px"} />
           <span id="feels-like-temp">
-            {console.log(data.current.humidity)}
             {data.current.feelslike_c}
           </span>
         </div>
